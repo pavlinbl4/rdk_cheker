@@ -1,0 +1,4 @@
+GetImage.axd?kind=WF&key=V&site=RDK2SPB - галочка на синем фоне
+GetImage.axd?kind=WF&key=E&site=RDK2SPB - сданный материал
+GetImage.axd?kind=WF&key=E&site=RDK2SPB - c замочком и словом edit
+***&site появился текст и ссылки есть
