@@ -16,9 +16,14 @@ from selenium.webdriver.firefox.service import Service
 from check_article_status import check_article_status
 from delete_old_pickle import delete_old_pickle
 from send_message_to_telegram import send_telegram_message
+from selenium.webdriver import FirefoxOptions
+
+from pathlib import Path
 
 service = Service(GeckoDriverManager().install())
-driver = webdriver.Firefox(service=service)
+options = FirefoxOptions()
+options.add_argument("--headless")
+driver = webdriver.Firefox(service=service, options=options)
 
 
 def find_date(str_with_date='№24 Пн, 05.02.24'):
@@ -54,10 +59,9 @@ def get_article_status():
     delete_old_pickle(today_filename)
     all_spans = get_spans()
     articles_dict = {}
-    if os.path.exists(f'{today_filename}.pickle'):
-        with open(f'{today_filename}.pickle', 'rb') as data_file:
+    if os.path.exists(f'{Path.home()}/{today_filename}.pickle'):
+        with open(f'{Path.home()}/{today_filename}.pickle', 'rb') as data_file:
             articles_dict = pickle.load(data_file)
-    # print(articles_dict)
     today_link = get_today_link(all_spans)
     driver.get(today_link)  # '//tr[@class="mapLO"][2]/td[6]/img'
     work_map = driver.find_elements('xpath', '//tr[@class="mapLO"]')
@@ -67,11 +71,11 @@ def get_article_status():
         article_name = all_trs[0].text
         article_status = find_article_status(all_trs[5].find_element('xpath', 'img').get_attribute('src'))
         if len(article_name) > 0 and article_name not in articles_dict:
-            print(article_name)
-            print(article_status)
+            print(f'{article_name} -- {article_status}')
+
             send_telegram_message(f'{article_name} - {article_status}')
             articles_dict[article_name] = article_status
-            with open(f'{today_filename}.pickle', 'wb') as f:
+            with open(f'{Path.home()}/{today_filename}.pickle', 'wb') as f:
                 pickle.dump(articles_dict, f)
         else:
             check_article_status(article_name, article_status, today_filename)
