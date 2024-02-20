@@ -8,9 +8,10 @@ def check_article_status(article_name, article_status, today_filename):
         article_dict = pickle.load(articles)
 
     if article_dict[article_name] != article_status and article_status == '***&site':
-        print("alarm-alarm")
         send_telegram_message(article_name)
         article_dict[article_name] = article_status
+        with open(f'{Path.home()}/{today_filename}.pickle', 'wb') as f:
+            pickle.dump(article_dict, f)
 
 
 if __name__ == '__main__':
