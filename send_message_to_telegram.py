@@ -14,7 +14,7 @@ def send_telegram_message(text: str):
 
     r = requests.post(method, data={
         "chat_id": channel_id,
-        "text": text
+        "text": f"В карте номера появился материал с текстом\n {text}"
     })
 
     if r.status_code != 200:
