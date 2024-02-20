@@ -58,10 +58,10 @@ def get_article_status():
     today_filename = date.today().strftime("%d_%m_%y")
     delete_old_pickle(today_filename)
     all_spans = get_spans()
-    articles_dict = {}
+    article_dict = {}
     if os.path.exists(f'{Path.home()}/{today_filename}.pickle'):
         with open(f'{Path.home()}/{today_filename}.pickle', 'rb') as data_file:
-            articles_dict = pickle.load(data_file)
+            article_dict = pickle.load(data_file)
     today_link = get_today_link(all_spans)
     driver.get(today_link)  # '//tr[@class="mapLO"][2]/td[6]/img'
     work_map = driver.find_elements('xpath', '//tr[@class="mapLO"]')
@@ -70,13 +70,13 @@ def get_article_status():
         all_trs = work_map[x].find_elements('xpath', 'td')
         article_name = all_trs[0].text
         article_status = find_article_status(all_trs[5].find_element('xpath', 'img').get_attribute('src'))
-        if len(article_name) > 0 and article_name not in articles_dict:
+        if len(article_name) > 0 and article_name not in article_dict:
             print(f'{article_name} -- {article_status}')
 
             send_telegram_message(f'{article_name} - {article_status}')
-            articles_dict[article_name] = article_status
+            article_dict[article_name] = article_status
             with open(f'{Path.home()}/{today_filename}.pickle', 'wb') as f:
-                pickle.dump(articles_dict, f)
+                pickle.dump(article_dict, f)
         else:
             check_article_status(article_name, article_status, today_filename)
 
