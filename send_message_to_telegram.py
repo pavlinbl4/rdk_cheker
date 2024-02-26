@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 def send_telegram_message(text: str):
     load_dotenv()
-    token = os.environ.get('old_token')
+    token = os.environ.get('crazypythonbot')
     channel_id = os.environ.get('channel_id')
 
     url = "https://api.telegram.org/bot"
@@ -14,7 +14,7 @@ def send_telegram_message(text: str):
 
     r = requests.post(method, data={
         "chat_id": channel_id,
-        "text": f"В карте номера появился материал с текстом\n {text}"
+        "text": f"С ообщение с локальной машины\n {text}"
     })
 
     if r.status_code != 200:

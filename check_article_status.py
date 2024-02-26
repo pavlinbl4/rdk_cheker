@@ -1,7 +1,11 @@
 import pickle
 from send_message_to_telegram import send_telegram_message
 from pathlib import Path
-from icecream import ic
+# from icecream import ic
+import logging
+
+logging.basicConfig(level=logging.INFO, filename='my_lol.log', datefmt='$Y/$m/$d  %I/%M', encoding='utf-8', filemode='w+')
+
 
 
 def check_article_status(article_name, article_status, today_filename):
@@ -11,6 +15,7 @@ def check_article_status(article_name, article_status, today_filename):
 
     if article_dict[article_name] != article_status and article_status == '***&site':
         send_telegram_message(article_name)
+        logging.info(f'old status of {article_name} - {article_status}')
         print(f'old status of {article_name} - {article_status}')
         article_dict[article_name] = article_status
         print(f'new status of {article_name} - {article_status}')
