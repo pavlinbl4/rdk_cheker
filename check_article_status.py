@@ -8,8 +8,8 @@ logging.basicConfig(level=logging.INFO, filename='my_lol.log', datefmt='$Y/$m/$d
 
 
 
-def check_article_status(article_name, article_status, today_filename):
-    with open(f'{Path.home()}/{today_filename}.pickle', 'rb') as articles:
+def check_article_status(article_name, article_status, today_filename,pickle_folder):
+    with open(f'{pickle_folder}/{today_filename}.pickle', 'rb') as articles:
         article_dict = pickle.load(articles)
         # ic(article_dict)
 
@@ -20,7 +20,7 @@ def check_article_status(article_name, article_status, today_filename):
         article_dict[article_name] = article_status
         print(f'new status of {article_name} - {article_status}')
 
-        with open(f'{Path.home()}/{today_filename}.pickle', 'wb') as f:
+        with open(f'{pickle_folder}/{today_filename}.pickle', 'wb') as f:
             pickle.dump(article_dict, f)
     else:
         print("No changes in pickle file")
