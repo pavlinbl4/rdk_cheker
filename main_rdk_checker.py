@@ -2,7 +2,6 @@
 # pip install webdriver-manager
 
 
-
 import re
 import pickle
 
@@ -21,6 +20,8 @@ from send_message_to_telegram import send_telegram_message
 from selenium.webdriver import FirefoxOptions
 
 from pathlib import Path
+
+from time_zone import get_city_time
 
 service = Service(GeckoDriverManager().install())
 options = FirefoxOptions()
@@ -57,12 +58,15 @@ def get_today_link(all_spans):
 
 
 def get_article_status():
-    today_filename = date.today().strftime("%d_%m_%y")
+    today_filename = get_city_time('Europe/Moscow').strftime("%d-%m-%Y")
     delete_old_pickle(today_filename)
     all_spans = get_spans()
     article_dict = {}
-    if os.path.exists(f'{Path.home()}/{today_filename}.pickle'):
-        with open(f'{Path.home()}/{today_filename}.pickle', 'rb') as data_file:
+    pickle_folder = 'Piclkle_files'
+    (Path() / pickle_folder).mkdir(exist_ok=True)
+
+    if os.path.exists(f'{pickle_folder}/{today_filename}.pickle'):
+        with open(f'{pickle_folder}/{today_filename}.pickle', 'rb') as data_file:
             article_dict = pickle.load(data_file)
     today_link = get_today_link(all_spans)
     driver.get(today_link)  # '//tr[@class="mapLO"][2]/td[6]/img'
@@ -77,10 +81,10 @@ def get_article_status():
 
             send_telegram_message(f'{article_name} - {article_status}')
             article_dict[article_name] = article_status
-            with open(f'{Path.home()}/{today_filename}.pickle', 'wb') as f:
+            with open(f'{pickle_folder}/{today_filename}.pickle', 'wb') as f:
                 pickle.dump(article_dict, f)
         else:
-            check_article_status(article_name, article_status, today_filename)
+            check_article_status(article_name, article_status, today_filename, pickle_folder)
 
     driver.close()
     driver.quit()
