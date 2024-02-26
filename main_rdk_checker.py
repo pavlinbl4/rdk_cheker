@@ -58,11 +58,12 @@ def get_today_link(all_spans):
 
 
 def get_article_status():
+    pickle_folder = 'Piclkle_files'
     today_filename = get_city_time('Europe/Moscow').strftime("%d-%m-%Y")
-    delete_old_pickle(today_filename)
+    delete_old_pickle(today_filename, pickle_folder)
     all_spans = get_spans()
     article_dict = {}
-    pickle_folder = 'Piclkle_files'
+
     (Path() / pickle_folder).mkdir(exist_ok=True)
 
     if os.path.exists(f'{pickle_folder}/{today_filename}.pickle'):
