@@ -16,5 +16,5 @@ def delete_old_pickle(today_filename,pickle_folder):
 
 
 if __name__ == '__main__':
-    delete_old_pickle("28_02_24.pickle", 'Piclkle_files')
+    delete_old_pickle("28_02_24.pickle", 'Pickle_files')
     # print(file_name('/Users/evgeniy/18_02_24.pickle'))
