@@ -12,20 +12,9 @@ custom_formatter = "<red>{time:YYYY-MM-DD HH:mm}</red> | <level>{level}</level> 
 logger.add(f'{logs_dir}/debug.log', format=custom_formatter)
 
 
-
-
-
 def find_article_status(article_status='GetImage.axd?kind=WF&key=E&site=RDK2SPB'):
     pattern = r'(?<=key=).*(?==RDK2SPB)'
     return re.findall(pattern, article_status)[0]
-
-
-# def get_today_link(all_spans):
-#     today = get_city_time('Europe/Moscow').strftime("%d.%m.%y")
-#     for span in all_spans:
-#         if find_date(span.text) == today:
-#             today_link = span.get_attribute('href')
-#             return today_link
 
 
 def get_article_status():
@@ -36,7 +25,6 @@ def get_article_status():
     path_to_pickle_folder = create_dir(pickle_folder)  # create folder for pickle files
     delete_old_pickle(today_filename, path_to_pickle_folder)
 
-
     article_dict = {}
 
     if os.path.exists(f'{path_to_pickle_folder}/{today_filename}.pickle'):
@@ -44,7 +32,6 @@ def get_article_status():
         article_dict = load_pickle(path_to_pickle_folder, today_filename)
     else:
         logger.info(f"No {today_filename}.pickle now")
-
 
     work_map = get_work_map()
 
@@ -59,10 +46,8 @@ def get_article_status():
         if article_name not in article_dict:
             logger.info(f'added to dict : {article_name} -- {article_status}')
 
-            # send_telegram_message(f'{article_name} - {article_status}')
             article_dict[article_name] = article_status
-            # with open(f'{pickle_folder}/{today_filename}.pickle', 'wb') as f:
-            #     pickle.dump(article_dict, f)
+
             dump_pickle(pickle_folder, today_filename, article_dict)
             logger.info("Pickle file updated")
 
