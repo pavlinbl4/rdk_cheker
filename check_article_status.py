@@ -12,8 +12,8 @@ from icecream import ic
 # logger.add(f'{logs_dir}/debug.log')
 
 
-def check_article_status(today_filename, path_to_pickle_folder):
-    article_dict = load_pickle(path_to_pickle_folder, today_filename)
+def check_article_status(today_filename, path_to_pickle_folder, article_dict):
+    # article_dict = load_pickle(path_to_pickle_folder, today_filename)
     article_dict.setdefault('telegram_info', [])
 
     for article_name, article_status in article_dict.items():
@@ -25,7 +25,7 @@ def check_article_status(today_filename, path_to_pickle_folder):
                     send_telegram_message(f'{article_name} - {article_status}')
                     article_dict = add_telegram_message(article_dict, article_name)
                     article_dict[article_name] = article_status
-                    dump_pickle(path_to_pickle_folder, today_filename, article_dict)
+                    # dump_pickle(path_to_pickle_folder, today_filename, article_dict)
                 else:
                     logger.info(f'The message was sent earlier {article_name} - {article_status}')
 
@@ -34,6 +34,7 @@ def check_article_status(today_filename, path_to_pickle_folder):
         except KeyError as key:
             send_telegram_message(f'No such line in RDK - {key}')
             logger.error(f'No such line in RDK - {key}')
+        dump_pickle(path_to_pickle_folder, today_filename, article_dict)
 
 if __name__ == '__main__':
     check_article_status('04-03-2024', "Pickle_files")
