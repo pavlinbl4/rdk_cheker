@@ -28,13 +28,14 @@ def check_article_status(today_filename, path_to_pickle_folder, article_dict):
                     # dump_pickle(path_to_pickle_folder, today_filename, article_dict)
                 else:
                     logger.info(f'The message was sent earlier {article_name} - {article_status}')
+            dump_pickle(path_to_pickle_folder, today_filename, article_dict)
 
             # else:
             #     logger.info("No changes in pickle file")
         except KeyError as key:
             send_telegram_message(f'No such line in RDK - {key}')
             logger.error(f'No such line in RDK - {key}')
-        dump_pickle(path_to_pickle_folder, today_filename, article_dict)
+        # dump_pickle(path_to_pickle_folder, today_filename, article_dict)
 
 if __name__ == '__main__':
     check_article_status('04-03-2024', "Pickle_files")
