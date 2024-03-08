@@ -1,5 +1,6 @@
 from check_article_status import check_article_status
 from check_existing_file import create_dir
+from delete_old_files import delete_old_log_files
 from driver_job import get_work_map
 from pickle_files import load_pickle, dump_pickle, delete_old_pickle
 from time_zone import get_city_time
@@ -19,6 +20,8 @@ def get_article_status():
     # today_filename = 'RDK'
     logger.info(today_filename)
 
+    delete_old_log_files(logs_dir)
+
     # set folder to pickle files
     pickle_folder = 'Pickle_files'
     path_to_pickle_folder = create_dir(pickle_folder)
@@ -28,7 +31,8 @@ def get_article_status():
     delete_old_pickle(today_filename, path_to_pickle_folder)
 
     # create new pickle file
-    dump_pickle(path_to_pickle_folder, today_filename)
+    if not os.path.exists(f'{path_to_pickle_folder}/{today_filename}.pickle'):
+        dump_pickle(path_to_pickle_folder, today_filename)
 
     article_dict = load_pickle(path_to_pickle_folder, today_filename)
 
