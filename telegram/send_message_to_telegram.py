@@ -3,6 +3,27 @@ import os
 from dotenv import load_dotenv
 
 
+def send_telegram_message(text: str):
+    load_dotenv()
+    token = os.environ.get('crazypythonbot')
+    channel_id = os.environ.get('channel_id')
+
+    url = "https://api.telegram.org/bot"
+    url += token
+    method = url + "/sendMessage"
+
+    r = requests.post(method, data={
+        "chat_id": channel_id,
+        "text": f"Сообщение с локальной машины\n {text}"
+    })
+
+    if r.status_code != 200:
+        raise Exception("post_text error")
+
+
+
+
+
 class SendTelegramMessage:
     def __init__(self, message_text, bot_name='crazypythonbot'):
         self.message_text = message_text
@@ -32,4 +53,4 @@ class SendTelegramMessage:
 
 
 if __name__ == '__main__':
-    SendTelegramMessage('oop style 222').send_message()
+    SendTelegramMessage('Fucking OOP').send_message()
