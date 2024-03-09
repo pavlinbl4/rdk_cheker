@@ -1,16 +1,14 @@
-from check_article_status import check_article_status
-from check_existing_file import create_dir
-from delete_old_files import delete_old_log_files
-from driver_job import get_work_map
-from pickle_files import load_pickle, dump_pickle, delete_old_pickle
-from time_zone import get_city_time
+from browser.driver_job import get_work_map
+from check_info.check_article_status import check_article_status
+from files_work.check_existing_file import create_dir
+from files_work.delete_old_files import delete_old_log_files
+from files_work.pickle_files import delete_old_pickle, dump_pickle, load_pickle
+
+from time_tools.time_zone import get_city_time
 from loguru import logger
 import os
 
 logs_dir = create_dir('Logs')
-# logs_dir = 'Logs'
-# custom_formatter = "<red>{time:YYYY-MM-DD HH:mm}</red> | <level>{level}</level> | <cyan>{message}</cyan>"
-# logger.add(f'{logs_dir}/debug.log', format=custom_formatter)
 logger.add(f'{logs_dir}/debug.log', rotation="10:00")
 
 
